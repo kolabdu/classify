@@ -14,20 +14,47 @@ def clean_url(url):
     return url
 
 # Define the makeTokens function
+# def makeTokens(url):
+#     tkns_BySlash = str(url.encode('utf-8')).split('/')  # make tokens after splitting by slash
+#     total_Tokens = []
+#     for i in tkns_BySlash:
+#         tokens = str(i).split('-')  # make tokens after splitting by dash
+#         tkns_ByDot = []
+#         for j in range(0, len(tokens)):
+#             temp_Tokens = str(tokens[j]).split('.')  # make tokens after splitting by dot
+#             tkns_ByDot = tkns_ByDot + temp_Tokens
+#         total_Tokens = total_Tokens + tokens + tkns_ByDot
+#     total_Tokens = list(set(total_Tokens))  # remove redundant tokens
+#     if 'com' in total_Tokens:
+#         total_Tokens.remove('com')  # removing .com since it occurs a lot of times and it should not be included in our features
+#     return total_Tokens
+
 def makeTokens(url):
+    if not url:
+        return []
+
     tkns_BySlash = str(url.encode('utf-8')).split('/')  # make tokens after splitting by slash
     total_Tokens = []
-    for i in tkns_BySlash:
-        tokens = str(i).split('-')  # make tokens after splitting by dash
-        tkns_ByDot = []
-        for j in range(0, len(tokens)):
-            temp_Tokens = str(tokens[j]).split('.')  # make tokens after splitting by dot
-            tkns_ByDot = tkns_ByDot + temp_Tokens
-        total_Tokens = total_Tokens + tokens + tkns_ByDot
-    total_Tokens = list(set(total_Tokens))  # remove redundant tokens
+
+    for i in tkns_BySlash:  # Check if tkns_BySlash is non-empty
+        if i:  # Ensure `i` is not empty
+            tokens = str(i).split('-')  # make tokens after splitting by dash
+            tkns_ByDot = []
+            for j in range(len(tokens)):
+                if tokens[j]:  # Ensure token is not empty
+                    temp_Tokens = str(tokens[j]).split('.')  # make tokens after splitting by dot
+                    tkns_ByDot += temp_Tokens
+            total_Tokens += tokens + tkns_ByDot
+    
+    # Remove redundant tokens
+    total_Tokens = list(set(total_Tokens))
+
+    # Handle common tokens like 'com'
     if 'com' in total_Tokens:
-        total_Tokens.remove('com')  # removing .com since it occurs a lot of times and it should not be included in our features
+        total_Ttokens.remove('com')
+
     return total_Tokens
+
 
 # Save the vectorizer using dill
 def save_vectorizer(vectorizer, filename):
