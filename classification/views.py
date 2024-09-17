@@ -75,6 +75,48 @@
 
 
 
+# from django.http import HttpResponse
+# from django.shortcuts import render
+# from .utils import load_model_and_vectorizer, predict_url_category, clean_url
+
+# def index(request):
+#     return render(request, 'index.html')
+
+# def predict_category(request):
+#     if request.method == 'POST':
+#         user_input = request.POST.get('url_input')
+
+#         if not user_input:
+#             return render(request, 'index.html', {'error': 'Please enter a URL'})
+
+#         cleaned_input = [clean_url(user_input)]
+
+#         try:
+#             # Load model and vectorizer
+#             model, vectorizer = load_model_and_vectorizer()
+#             print("Form submitted. Input URL:", cleaned_input)
+            
+#             # Print the tokenizer to check if it's correctly loaded
+#             if hasattr(vectorizer, 'tokenizer'):
+#                 print("Tokenizer found:", vectorizer.tokenizer)
+#             else:
+#                 print("Tokenizer not found in the vectorizer")
+
+#             # Get prediction
+#             prediction = predict_url_category(cleaned_input, model, vectorizer)
+#             print("Predicted category:", prediction)
+
+#             # Return the prediction result
+#             return render(request, 'index.html', {'prediction': prediction})
+
+#         except Exception as e:
+#             print(f"Error occurred: {e}")
+#             return render(request, 'index.html', {'error': 'An error occurred while processing the URL. Please try again later.'})
+
+#     # If the request method is not POST (e.g., GET), render the index page
+#     return render(request, 'index.html')
+
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from .utils import load_model_and_vectorizer, predict_url_category, clean_url
@@ -95,19 +137,26 @@ def predict_category(request):
             # Load model and vectorizer
             model, vectorizer = load_model_and_vectorizer()
             print("Form submitted. Input URL:", cleaned_input)
-            
+
             # Print the tokenizer to check if it's correctly loaded
             if hasattr(vectorizer, 'tokenizer'):
                 print("Tokenizer found:", vectorizer.tokenizer)
-            else:
-                print("Tokenizer not found in the vectorizer")
+
+            # Check vectorizer transformation
+            transformed_url = vectorizer.transform(cleaned_input)
+            print(f"Transformed URL features: {transformed_url.toarray()}")  # Print the transformed features
 
             # Get prediction
-            prediction = predict_url_category(cleaned_input, model, vectorizer)
-            print("Predicted category:", prediction)
+            prediction = model.predict(transformed_url)
+            print(f"Model prediction: {prediction}")  # Print the raw model prediction
 
             # Return the prediction result
-            return render(request, 'index.html', {'prediction': prediction})
+            if prediction == 'good':
+                prediction_text = 'The URL is safe'
+            else:
+                prediction_text = "URL APPEARS TO BE MALICIOUS"
+
+            return render(request, 'index.html', {'prediction': prediction_text})
 
         except Exception as e:
             print(f"Error occurred: {e}")
