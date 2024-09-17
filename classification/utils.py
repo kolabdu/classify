@@ -56,37 +56,68 @@ def clean_url(url):
 #     return total_Tokens
 
 
+# def makeTokens(url):
+#     print(f"Original URL: {url}")
+
+#     if not url:
+#         print("URL is empty.")
+#         return []
+
+#     tkns_BySlash = str(url.encode('utf-8')).split('/')
+#     print(f"Tokens by slash: {tkns_BySlash}")
+
+#     total_Tokens = []
+#     for i in tkns_BySlash:
+#         if i:
+#             print(f"Processing token: {i}")
+#             tokens = str(i).split('-')
+#             tkns_ByDot = []
+#             for j in range(len(tokens)):
+#                 if tokens[j]:
+#                     temp_Tokens = str(tokens[j]).split('.')
+#                     tkns_ByDot += temp_Tokens
+#             total_Tokens += tokens + tkns_ByDot
+
+#     print(f"Final tokens before removing redundancy: {total_Tokens}")
+    
+#     total_Tokens = list(set(total_Tokens))
+    
+#     if 'com' in total_Tokens:
+#         total_Tokens.remove('com')
+
+#     print(f"Final tokens: {total_Tokens}")
+#     return total_Tokens
+
+
+
 def makeTokens(url):
-    print(f"Original URL: {url}")
+    try:
+        # Encode the URL to UTF-8 and convert to string, but handle it more carefully
+        tkns_BySlash = str(url).split('/')  # Split by slash
 
-    if not url:
-        print("URL is empty.")
-        return []
+        total_Tokens = []
+        for i in tkns_BySlash:
+            print(f"Token from slash: {i}")  # Debugging print
 
-    tkns_BySlash = str(url.encode('utf-8')).split('/')
-    print(f"Tokens by slash: {tkns_BySlash}")
-
-    total_Tokens = []
-    for i in tkns_BySlash:
-        if i:
-            print(f"Processing token: {i}")
-            tokens = str(i).split('-')
+            tokens = str(i).split('-')  # Split by dash
             tkns_ByDot = []
-            for j in range(len(tokens)):
-                if tokens[j]:
-                    temp_Tokens = str(tokens[j]).split('.')
-                    tkns_ByDot += temp_Tokens
-            total_Tokens += tokens + tkns_ByDot
+            for j in range(0, len(tokens)):
+                temp_Tokens = str(tokens[j]).split('.')  # Split by dot
+                tkns_ByDot = tkns_ByDot + temp_Tokens
+            total_Tokens = total_Tokens + tokens + tkns_ByDot
 
-    print(f"Final tokens before removing redundancy: {total_Tokens}")
-    
-    total_Tokens = list(set(total_Tokens))
-    
-    if 'com' in total_Tokens:
-        total_Tokens.remove('com')
+        total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
 
-    print(f"Final tokens: {total_Tokens}")
-    return total_Tokens
+        if 'com' in total_Tokens:
+            total_TTokens.remove('com')  # Remove '.com'
+        
+        print(f"Final tokens: {total_Tokens}")  # Debugging print
+
+        return total_Tokens
+
+    except Exception as e:
+        print(f"Error in makeTokens function: {e}")
+        return []  # Return an empty list if an error occurs
 
 
 # Save the vectorizer using dill
