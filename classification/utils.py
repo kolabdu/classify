@@ -119,44 +119,70 @@ def clean_url(url):
 #         print(f"Error in makeTokens function: {e}")
 #         return []  # Return an empty list if an error occurs
 
+# def makeTokens(url):
+#     try:
+#         # Ensure the input is treated as a string
+#         url_str = str(url)
+#         tkns_BySlash = url_str.split('/')  # Split by slash
+        
+#         total_Tokens = []
+
+#         for i in tkns_BySlash:
+#             if not i:  # Skip if `i` is None or empty
+#                 continue
+
+#             print(f"Token from slash: {i}")  # Debugging print
+
+#             tokens = str(i).split('-')  # Split by dash
+            
+#             tkns_ByDot = []
+#             for j in range(len(tokens)):
+#                 if not tokens[j]:  # Skip if `tokens[j]` is None or empty
+#                     continue
+
+#                 temp_Tokens = str(tokens[j]).split('.')  # Split by dot
+#                 tkns_ByDot.extend(temp_Tokens)  # Collect the dot tokens
+
+#             total_Tokens.extend(tokens + tkns_ByDot)  # Combine the tokens
+
+#         total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
+
+#         if 'com' in total_Tokens:
+#             total_TTokens.remove('com')  # Remove '.com'
+
+#         print(f"Final tokens: {total_Tokens}")  # Debugging print
+
+#         return total_Tokens
+
+#     except Exception as e:
+#         print(f"Error in makeTokens function: {e}")
+#         return []  # Return an empty list if an error occurs
+
+
 def makeTokens(url):
     try:
-        # Ensure the input is treated as a string
-        url_str = str(url)
-        tkns_BySlash = url_str.split('/')  # Split by slash
-        
+        url_str = str(url)  # Convert URL to string
+        print(f"URL String: {url_str}")
+
+        # Tokenize by slash
+        tkns_BySlash = url_str.split('/')
+        print(f"Tokens by slash: {tkns_BySlash}")
+
         total_Tokens = []
+        for t in tkns_BySlash:
+            if t:
+                print(f"Processing: {t}")
+                total_Tokens.append(t)
 
-        for i in tkns_BySlash:
-            if not i:  # Skip if `i` is None or empty
-                continue
-
-            print(f"Token from slash: {i}")  # Debugging print
-
-            tokens = str(i).split('-')  # Split by dash
-            
-            tkns_ByDot = []
-            for j in range(len(tokens)):
-                if not tokens[j]:  # Skip if `tokens[j]` is None or empty
-                    continue
-
-                temp_Tokens = str(tokens[j]).split('.')  # Split by dot
-                tkns_ByDot.extend(temp_Tokens)  # Collect the dot tokens
-
-            total_Tokens.extend(tokens + tkns_ByDot)  # Combine the tokens
-
-        total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
-
-        if 'com' in total_Tokens:
-            total_TTokens.remove('com')  # Remove '.com'
-
-        print(f"Final tokens: {total_Tokens}")  # Debugging print
+        total_Tokens = list(set(total_Tokens))
+        print(f"Final tokens: {total_Tokens}")
 
         return total_Tokens
 
     except Exception as e:
-        print(f"Error in makeTokens function: {e}")
-        return []  # Return an empty list if an error occurs
+        print(f"Error in simplified makeTokens function: {e}")
+        return []
+
 
 
 
