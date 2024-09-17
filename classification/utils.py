@@ -90,27 +90,66 @@ def clean_url(url):
 
 
 
+# def makeTokens(url):
+#     try:
+#         # Encode the URL to UTF-8 and convert to string, but handle it more carefully
+#         tkns_BySlash = str(url).split('/')  # Split by slash
+
+#         total_Tokens = []
+#         for i in tkns_BySlash:
+#             print(f"Token from slash: {i}")  # Debugging print
+
+#             tokens = str(i).split('-')  # Split by dash
+#             tkns_ByDot = []
+#             for j in range(0, len(tokens)):
+#                 temp_Tokens = str(tokens[j]).split('.')  # Split by dot
+#                 tkns_ByDot = tkns_ByDot + temp_Tokens
+#             total_Tokens = total_Tokens + tokens + tkns_ByDot
+
+#         total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
+
+#         if 'com' in total_Tokens:
+#             total_TTokens.remove('com')  # Remove '.com'
+        
+#         print(f"Final tokens: {total_Tokens}")  # Debugging print
+
+#         return total_Tokens
+
+#     except Exception as e:
+#         print(f"Error in makeTokens function: {e}")
+#         return []  # Return an empty list if an error occurs
+
 def makeTokens(url):
     try:
-        # Encode the URL to UTF-8 and convert to string, but handle it more carefully
-        tkns_BySlash = str(url).split('/')  # Split by slash
-
+        # Ensure the input is treated as a string
+        url_str = str(url)
+        tkns_BySlash = url_str.split('/')  # Split by slash
+        
         total_Tokens = []
+
         for i in tkns_BySlash:
+            if not i:  # Skip if `i` is None or empty
+                continue
+
             print(f"Token from slash: {i}")  # Debugging print
 
             tokens = str(i).split('-')  # Split by dash
+            
             tkns_ByDot = []
-            for j in range(0, len(tokens)):
+            for j in range(len(tokens)):
+                if not tokens[j]:  # Skip if `tokens[j]` is None or empty
+                    continue
+
                 temp_Tokens = str(tokens[j]).split('.')  # Split by dot
-                tkns_ByDot = tkns_ByDot + temp_Tokens
-            total_Tokens = total_Tokens + tokens + tkns_ByDot
+                tkns_ByDot.extend(temp_Tokens)  # Collect the dot tokens
+
+            total_Tokens.extend(tokens + tkns_ByDot)  # Combine the tokens
 
         total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
 
         if 'com' in total_Tokens:
             total_TTokens.remove('com')  # Remove '.com'
-        
+
         print(f"Final tokens: {total_Tokens}")  # Debugging print
 
         return total_Tokens
@@ -118,6 +157,7 @@ def makeTokens(url):
     except Exception as e:
         print(f"Error in makeTokens function: {e}")
         return []  # Return an empty list if an error occurs
+
 
 
 # Save the vectorizer using dill
