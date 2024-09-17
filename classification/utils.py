@@ -161,27 +161,50 @@ def clean_url(url):
 
 def makeTokens(url):
     try:
-        url_str = str(url)  # Convert URL to string
-        print(f"URL String: {url_str}")
-
-        # Tokenize by slash
-        tkns_BySlash = url_str.split('/')
-        print(f"Tokens by slash: {tkns_BySlash}")
-
+        # Ensure the input is treated as a string
+        url_str = str(url)
+        tkns_BySlash = url_str.split('/')  # Split by slash
+        
         total_Tokens = []
-        for t in tkns_BySlash:
-            if t:
-                print(f"Processing: {t}")
-                total_Tokens.append(t)
 
-        total_Tokens = list(set(total_Tokens))
-        print(f"Final tokens: {total_Tokens}")
+        for i in tkns_BySlash:
+            if not i:  # Skip if `i` is None or empty
+                print("Skipping empty 'i' from slash")
+                continue
+
+            print(f"Processing token from slash: {i}")  # Debugging print
+
+            tokens = str(i).split('-')  # Split by dash
+            tkns_ByDot = []
+
+            for j in range(len(tokens)):
+                if not tokens[j]:  # Skip if `tokens[j]` is None or empty
+                    print(f"Skipping empty token from dash at index {j}")
+                    continue
+
+                temp_Tokens = str(tokens[j]).split('.')  # Split by dot
+                print(f"Processing dot token: {temp_Tokens}")
+
+                # Safely extend tokens, handle if temp_Tokens is empty
+                tkns_ByDot.extend(temp_Tokens if temp_Tokens else [])
+            
+            # Safely extend total tokens
+            total_Tokens.extend(tokens if tokens else [])
+            total_Tokens.extend(tkns_ByDot)
+
+        total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
+
+        if 'com' in total_Tokens:
+            total_TTokens.remove('com')  # Remove '.com'
+
+        print(f"Final tokens: {total_Tokens}")  # Debugging print
 
         return total_Tokens
 
     except Exception as e:
-        print(f"Error in simplified makeTokens function: {e}")
-        return []
+        print(f"Error in makeTokens function: {e}")
+        return []  # Return an empty list if an error occurs
+
 
 
 
