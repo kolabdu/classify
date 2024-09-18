@@ -159,52 +159,93 @@ def clean_url(url):
 #         return []  # Return an empty list if an error occurs
 
 
+# def makeTokens(url):
+#     try:
+#         # Ensure the input is treated as a string
+#         url_str = str(url)
+#         tkns_BySlash = url_str.split('/')  # Split by slash
+        
+#         total_Tokens = []
+
+#         for i in tkns_BySlash:
+#             if not i:  # Skip if `i` is None or empty
+#                 print("Skipping empty 'i' from slash")
+#                 continue
+
+#             print(f"Processing token from slash: {i}")  # Debugging print
+
+#             tokens = str(i).split('-')  # Split by dash
+#             tkns_ByDot = []
+
+#             for j in range(len(tokens)):
+#                 if not tokens[j]:  # Skip if `tokens[j]` is None or empty
+#                     print(f"Skipping empty token from dash at index {j}")
+#                     continue
+
+#                 temp_Tokens = str(tokens[j]).split('.')  # Split by dot
+#                 print(f"Processing dot token: {temp_Tokens}")
+
+#                 # Safely extend tokens, handle if temp_Tokens is empty
+#                 tkns_ByDot.extend(temp_Tokens if temp_Tokens else [])
+            
+#             # Safely extend total tokens
+#             total_Tokens.extend(tokens if tokens else [])
+#             total_Tokens.extend(tkns_ByDot)
+
+#         total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
+
+#         if 'com' in total_Tokens:
+#             total_TTokens.remove('com')  # Remove '.com'
+
+#         print(f"Final tokens: {total_Tokens}")  # Debugging print
+
+#         return total_Tokens
+
+#     except Exception as e:
+#         print(f"Error in makeTokens function: {e}")
+#         return []  # Return an empty list if an error occurs
+
 def makeTokens(url):
     try:
-        # Ensure the input is treated as a string
         url_str = str(url)
         tkns_BySlash = url_str.split('/')  # Split by slash
-        
         total_Tokens = []
 
-        for i in tkns_BySlash:
-            if not i:  # Skip if `i` is None or empty
-                print("Skipping empty 'i' from slash")
+        # Loop through tokens created by slash
+        for f in tkns_BySlash:
+            print(f"Current value of i (slash): {f}")  # Log i from the first loop
+
+            if not f:  # Skip if `f` is None or empty
                 continue
 
-            print(f"Processing token from slash: {i}")  # Debugging print
-
-            tokens = str(i).split('-')  # Split by dash
+            tokens = str(f).split('-')  # Split by dash
             tkns_ByDot = []
 
+            # Loop through tokens created by dash
             for j in range(len(tokens)):
+                print(f"Current value of j (dash): {tokens[j]}")  # Log j from the second loop
+
                 if not tokens[j]:  # Skip if `tokens[j]` is None or empty
-                    print(f"Skipping empty token from dash at index {j}")
                     continue
 
                 temp_Tokens = str(tokens[j]).split('.')  # Split by dot
-                print(f"Processing dot token: {temp_Tokens}")
+                print(f"Tokens from dot: {temp_Tokens}")  # Log dot-split tokens
 
-                # Safely extend tokens, handle if temp_Tokens is empty
-                tkns_ByDot.extend(temp_Tokens if temp_Tokens else [])
-            
-            # Safely extend total tokens
-            total_Tokens.extend(tokens if tokens else [])
-            total_Tokens.extend(tkns_ByDot)
+                tkns_ByDot.extend(temp_Tokens)  # Collect the dot tokens
+
+            total_Tokens.extend(tokens + tkns_ByDot)  # Combine the tokens
 
         total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
 
         if 'com' in total_Tokens:
             total_TTokens.remove('com')  # Remove '.com'
 
-        print(f"Final tokens: {total_Tokens}")  # Debugging print
-
+        print(f"Final tokens: {total_Tokens}")  # Final tokens log
         return total_Tokens
 
     except Exception as e:
         print(f"Error in makeTokens function: {e}")
-        return []  # Return an empty list if an error occurs
-
+        return []
 
 
 
