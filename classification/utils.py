@@ -12,37 +12,40 @@ def clean_url(url):
 def makeTokens(url):
     try:
         url_str = str(url)
-        tkns_BySlash = url_str.split('/')  # Split by slash
-        total_Tokens = []
+        # Split URL by slashes ("/")
+        tokens_by_slash = url_str.split('/')
+        all_tokens = []
 
-        # Loop through tokens created by slash
-        for f in tkns_BySlash:  # Changed i to f to avoid conflicts
-            if not f:  # Skip empty tokens
+        # Iterate over tokens split by slash
+        for slash_token in tokens_by_slash:
+            if not slash_token:  # Skip empty tokens
                 continue
 
-            tokens = str(f).split('-')  # Split by dash
-            tkns_ByDot = []
+            # Split each token further by dashes ("-")
+            tokens_by_dash = slash_token.split('-')
 
-            # Loop through tokens created by dash
-            for j in range(len(tokens)):
-                if not tokens[j]:  # Skip empty tokens
+            # Collect dot-separated tokens from each dash-separated token
+            for dash_token in tokens_by_dash:
+                if not dash_token:  # Skip empty tokens
                     continue
 
-                temp_Tokens = str(tokens[j]).split('.')  # Split by dot
-                tkns_ByDot.extend(temp_Tokens)  # Collect the dot tokens
+                # Split further by dots (".")
+                tokens_by_dot = dash_token.split('.')
+                all_tokens.extend(tokens_by_dot)
 
-            total_Tokens.extend(tokens + tkns_ByDot)  # Combine the tokens
+            # Add the dash-separated tokens to the main list as well
+            all_tokens.extend(tokens_by_dash)
 
-        total_Tokens = list(set(total_Tokens))  # Remove redundant tokens
+        # Remove redundant tokens and any unwanted token like 'com'
+        all_tokens = list(set(all_tokens))
+        if 'com' in all_tokens:
+            all_tokens.remove('com')
 
-        if 'com' in total_Tokens:
-            total_Tokens.remove('com')  # Remove '.com'
-
-        return total_Tokens
+        return all_tokens
 
     except Exception as e:
         print(f"Error in makeTokens function: {e}")
-        return []  # Return an empty list if there's an error
+        return []  # Return an empty list if an error occurs
 
 # Save the vectorizer using dill
 def save_vectorizer(vectorizer, filename):
