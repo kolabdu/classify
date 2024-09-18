@@ -9,6 +9,44 @@ def clean_url(url):
             break
     return url
 
+# def makeTokens(url):
+#     try:
+#         url_str = str(url)
+#         # Split URL by slashes ("/")
+#         tokens_by_slash = url_str.split('/')
+#         all_tokens = []
+
+#         # Iterate over tokens split by slash
+#         for slash_token in tokens_by_slash:
+#             if not slash_token:  # Skip empty tokens
+#                 continue
+
+#             # Split each token further by dashes ("-")
+#             tokens_by_dash = slash_token.split('-')
+
+#             # Collect dot-separated tokens from each dash-separated token
+#             for dash_token in tokens_by_dash:
+#                 if not dash_token:  # Skip empty tokens
+#                     continue
+
+#                 # Split further by dots (".")
+#                 tokens_by_dot = dash_token.split('.')
+#                 all_tokens.extend(tokens_by_dot)
+
+#             # Add the dash-separated tokens to the main list as well
+#             all_tokens.extend(tokens_by_dash)
+
+#         # Remove redundant tokens and any unwanted token like 'com'
+#         all_tokens = list(set(all_tokens))
+#         if 'com' in all_tokens:
+#             all_tokens.remove('com')
+
+#         return all_tokens
+
+#     except Exception as e:
+#         print(f"Error in makeTokens function: {e}")
+#         return []  # Return an empty list if an error occurs
+
 def makeTokens(url):
     try:
         url_str = str(url)
@@ -46,6 +84,7 @@ def makeTokens(url):
     except Exception as e:
         print(f"Error in makeTokens function: {e}")
         return []  # Return an empty list if an error occurs
+
 
 # Save the vectorizer using dill
 def save_vectorizer(vectorizer, filename):
